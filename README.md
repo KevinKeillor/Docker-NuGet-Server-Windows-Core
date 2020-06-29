@@ -2,6 +2,14 @@
 This builds the NuGet server on the ASP.NET SDK image and then copies the files into an IIS version of Server Core.
 
 # Docker
+To get started... cd into the "nugetserver" folder.
+
+`cd nugetserver`
+
+`./build.ps1`
+
+`./run.ps1`
+
 Run this command to access the container with PowerShell.  
 `docker exec -it nugetserver powershell`
 
