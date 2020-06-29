@@ -36,6 +36,8 @@ Stop-WebSite 'NuGetServer'
 Start-WebSite 'NuGetServer'  
 
 ## Service Monitor
+Note: Trying to figure this one out... not sure how this works.. leaving notes for now...  
+
 ServiceMonitor is a Windows executable designed to be used as the entrypoint process when running IIS inside a Windows Server container.
 
 [GitHub: IIS.ServiceMonitor](https://github.com/microsoft/IIS.ServiceMonitor)  
