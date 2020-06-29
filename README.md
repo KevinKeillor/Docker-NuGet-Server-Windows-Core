@@ -8,6 +8,8 @@ Run this command to access the container with PowerShell.
 # NuGet Configuration
 There are configuration values in the web.config that can be adjusted. This installation installs choco and vim so it's very easy to modify these configuration values if you are famililar.
 
+The main Dockerfile is under the "nugetserver" folder. The prior folder, "msbuild" is a Dockerfile explicitly for running msbuild. This was used to build the multi-stage build Dockerfile for the NuGet server.
+
 web.config  
 * requireApiKey
 * apiKey
