@@ -11,6 +11,7 @@ RUN choco install vim -y
 # set up dirs
 RUN New-Item -Path C:\source -ItemType Directory -Force
 RUN New-Item -Path C:\published -ItemType Directory -Force
+RUN New-Item -Path C:\inetpub\wwwroot\Packages -ItemType Directory -Force
 WORKDIR /source
 
 # clone and run msbuild
@@ -29,18 +30,18 @@ FROM mcr.microsoft.com/windows/servercore/iis as nugetserver
 
 SHELL ["powershell"]
 
+# todo: create user
+# todo: volume for packages
+
+# clean iis folder
+RUN powershell -NoProfile -Command Remove-Item -Recurse C:\inetpub\wwwroot\*
+
 # install choco, vim
 RUN Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
 RUN choco install vim -y
 
 # copy files
 WORKDIR /inetpub/wwwroot
-
-# remove iis site
-RUN Remove-WebSite -Name 'Default Web Site'
-RUN Get-ChildItem -Path C:\inetpub\wwwroot -Include *.* -Recurse | foreach { $_.Delete()}
-
-# create iis site
-RUN New-Website -Name 'NuGetServer' -Port 80 -PhysicalPath 'c:\inetpub\wwwroot' -ApplicationPool '.NET v4.5'
-
 COPY --from=msbuild /published/ .
+
+EXPOSE 8000
