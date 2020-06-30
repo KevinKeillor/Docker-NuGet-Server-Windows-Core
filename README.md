@@ -18,6 +18,8 @@ There are configuration values in the web.config that can be adjusted. This inst
 
 The main Dockerfile is under the "nugetserver" folder. The prior folder, "msbuild" is a Dockerfile explicitly for running msbuild. This was used to build the multi-stage build Dockerfile for the NuGet server.
 
+`vim web.config`
+
 web.config  
 * requireApiKey
 * apiKey
@@ -31,13 +33,7 @@ web.config
         </system.web>
     </configuration>
 
-## Restart IIS
-Stop-WebSite 'NuGetServer'  
-Start-WebSite 'NuGetServer'  
+### Troubleshooting
+Once you've accessed the container you can run this command to see the internal error.
 
-## Service Monitor
-Note: Trying to figure this one out... not sure how this works.. leaving notes for now...  
-
-ServiceMonitor is a Windows executable designed to be used as the entrypoint process when running IIS inside a Windows Server container.
-
-[GitHub: IIS.ServiceMonitor](https://github.com/microsoft/IIS.ServiceMonitor)  
+`Invoke-WebRequest 'http://localhost/'`

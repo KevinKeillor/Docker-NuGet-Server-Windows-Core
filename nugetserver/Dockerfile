@@ -11,7 +11,6 @@ RUN choco install vim -y
 # set up dirs
 RUN New-Item -Path C:\source -ItemType Directory -Force
 RUN New-Item -Path C:\published -ItemType Directory -Force
-RUN New-Item -Path C:\inetpub\wwwroot\Packages -ItemType Directory -Force
 WORKDIR /source
 
 # clone and run msbuild
@@ -33,15 +32,28 @@ SHELL ["powershell"]
 # todo: create user
 # todo: volume for packages
 
-# clean iis folder
-RUN powershell -NoProfile -Command Remove-Item -Recurse C:\inetpub\wwwroot\*
-
 # install choco, vim
-RUN Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+RUN Set-ExecutionPolicy Bpass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
 RUN choco install vim -y
+
+# install
+RUN Add-WindowsFeature Web-Asp-Net45
+RUN Add-WindowsFeature NET-Framework-45-ASPNET
+
+# dirs
+RUN New-Item -Path C:\setup -ItemType Directory -Force
+RUN New-Item -Path C:\inetpub\wwwroot\Packages -ItemType Directory -Force
+
+# clean iis folder
+RUN -NoProfile -Command Remove-Item -Recurse C:\inetpub\wwwroot\*
+
+# unlock sections in web.config
+RUN & $env:windir\system32\inetsrv\appcmd.exe unlock config -section:system.webServer/handlers
+RUN & $env:windir\system32\inetsrv\appcmd.exe unlock config -section:system.webServer/modules
+
+# enable directory browsing (useful for debugging)
+#RUN & $env:windir\system32\inetsrv\appcmd set config /section:directoryBrowse /enabled:true
 
 # copy files
 WORKDIR /inetpub/wwwroot
 COPY --from=msbuild /published/ .
-
-EXPOSE 8000
