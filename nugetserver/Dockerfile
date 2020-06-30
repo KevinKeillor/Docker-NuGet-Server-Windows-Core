@@ -29,7 +29,7 @@ FROM mcr.microsoft.com/windows/servercore/iis as nugetserver
 
 SHELL ["powershell"]
 
-# todo: create user
+# todo: create user for least priviliged
 # todo: volume for packages
 
 # install choco, vim
