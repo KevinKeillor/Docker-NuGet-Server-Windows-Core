@@ -1,1 +1,0 @@
-msbuild NuGet.Server.sln /p:DeployOnBuild=true /p:PublishProfile=FolderProfile

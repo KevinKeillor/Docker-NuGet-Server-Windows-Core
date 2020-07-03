@@ -1,0 +1,60 @@
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: nugsrsvc 
+  name: nugsrsvc 
+spec:
+  ports:
+  - port: 80 
+    protocol: TCP
+    targetPort: 80 
+  - port: 443 
+    protocol: TCP
+    targetPort: 443
+  selector:
+    name: nugsrsvc
+  type: NodePort
+  
+---  
+
+apiVersion: v1
+kind: Deployment
+metadata:
+  name: nugsrv
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nugsrv
+    spec:
+      containers:
+      - name: nugsrv
+        image: mrjamiebowman/nuget-server-windows-server-core
+        ports:
+          - name: nugsrv
+            containerPort: 80
+            
+
+
+
+
+  selector:
+    matchLabels:
+      app: nugsrv
+
+
+        env:
+          - name: "DOTNETCORE_ENVIRONMENT"
+            value: "Kubernetes"
+        volumeMounts:
+          - name: secrets
+            mountPath: /app/secrets
+            readOnly: true
+      volumes:
+      - name: packages
+        # secret:
+        #   secretName: kapsecrets
