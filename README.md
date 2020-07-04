@@ -13,6 +13,14 @@ To get started... cd into the "nugetserver" folder.
 Run this command to access the container with PowerShell.  
 `docker exec -it nugetserver powershell`
 
+# Running the Image
+
+`./run.ps1`
+
+or  
+
+`docker run -d --name nugetserver -v ${PWD}\packages:C:\inetpub\wwwroot\Packages -p 80:80 -p 443:443 mrjamiebowman/nugetserver`
+
 # NuGet Configuration
 There are configuration values in the web.config that can be adjusted. This installation installs choco and vim so it's very easy to modify these configuration values if you are famililar.
 
