@@ -3,12 +3,7 @@ This builds the NuGet server on the ASP.NET SDK image and then copies the files 
 
 # Running the Image
 
-`./run.ps1`
-
-or  
-
 `docker run -d --name nugetserver -v ${PWD}\packages:C:\inetpub\wwwroot\Packages -p 80:80 -p 443:443 mrjamiebowman/nugetserver`
-
 
 # GitHub
 If you want fork it... open to pull requests if it improves the image.  
